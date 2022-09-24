@@ -15,11 +15,11 @@ void BFS(TreeNode *root)
     Q.push(root);      //队尾插入根节点
     while (!Q.empty()) //不为空
     {
-        TreeNode *node = Q.front(); // node指针指向第一个元素
-        printf("[%d]", node->val);
-        Q.pop(); //删除第一个元素
-        if (node->left) Q.push(node->left);
-        if (node->right) Q.push(node->right);
+        TreeNode *pnode = Q.front(); // pnode指针指向第一个元素
+        printf("[%d]", pnode->val);  //需要执行的操作，这里为输出
+        Q.pop();                     //删除第一个元素
+        if (pnode->left) Q.push(pnode->left);
+        if (pnode->right) Q.push(pnode->right);
     }
 }
 int main(int argc, char *argv[], char *env)
