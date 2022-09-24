@@ -1,6 +1,5 @@
 #include <iostream>
 #include <limits>
-#include <sstream>
 using namespace std;
 
 template <class T1, class T2> class Solution
