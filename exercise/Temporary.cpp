@@ -3,17 +3,16 @@
 using namespace std;
 int a[10001], tmp[10001];
 int n;
-void insert_sort()
+int tar_pos(int tar)
 {
     for (int i = 1; i <= n; i++)
         for (int j = i; j >= 2; j--)
-            if (tmp[j] < tmp[j - 1]) swap(tmp[j], tmp[j - 1]);
-}
-int find(int k)
-{
-    for (int i = 1; i <= n; i++)
-        if (tmp[i] == k) return i;
-    return -1;
+            if (tmp[j] < tmp[j - 1]) {
+                swap(tmp[j], tmp[j - 1]);
+                if (tar == j) tar--;
+                if (tar == j - 1) tar++;
+            }
+    return tar;
 }
 int main()
 {
@@ -23,17 +22,13 @@ int main()
     for (int i = 1; i <= Q; i++) {
         memcpy(tmp, a, n + 1);
         cin >> opr;
-        switch (opr) {
-        case 1:
+        if (1 == opr) {
             cin >> x >> v;
             a[x] = v;
-            break;
-        case 2:
+        }
+        else if (2 == opr) {
             cin >> x;
-            insert_sort();
-            cout << find(a[x]) << endl;
-            break;
-        default: cout << "input error" << endl; break;
+            cout << tar_pos(x) << endl;
         }
     }
     return 0;

@@ -2,16 +2,16 @@
 #include <ctime>
 #include <iostream>
 using namespace std;
-int rand_int(int a, int b)
+template <class T> T randGen(T a, T b, unsigned int seed = time(0))
 {
     srand(time(0));
     return rand() % b + a; // From b to a-1+b,b is the range
 }
-int Mora_Input()
+template <class T> T Mora_Input(const char addition_output[])
 {
-    int a;
-    printf("Your Choice(1 means Rock,2 means Paper,3 means Scissors):");
-    scanf("%d", &a);
+    T a;
+    cout << addition_output;
+    cin >> a;
     return a;
 }
 int Compare(int a, int b)
@@ -25,28 +25,27 @@ int Compare(int a, int b)
     if ((int)a == a && (int)b == b)
         return 3;
     else
-        return rand_int(10, 100);
+        return randGen<int>(10, 100);
 }
-int Mora_Program(bool type)
+void Mora_Program(bool type)
 {
     // The Rock-Paper-Scissors Game
     // 1 means Rock,2 means Paper,3 means Scissors
-    if (!type) return 0;
+    if (!type) return;
     printf("Let's Play the Rock-Paper-Scissors game !");
-    int a = rand_int(1, 3);
-    int b = Mora_Input();
+    int a = randGen<int>(1, 3);
+    int b = Mora_Input<int>(
+        "Your Choice(1 means Rock,2 means Paper,3 means Scissors):");
     switch (Compare(a, b)) {
     case 0: printf("You win this time."); break;
     case 1: printf("The Program Win,But you lose this time."); break;
     case 2: printf("You two have got a same choice this time."); break;
     case 3:
-        printf("Error!You(User) Just Input a error number which isn't 1,2 "
-               "or 3!");
+        printf("Error!You(User) Just Input a error number which "
+               "isn't in the range of 1,2 or 3!");
         break;
-    default: printf("Fatal Input Error.");
+    default: printf("Fatal Input Error!");
     }
-
-    return 0;
 }
 int main()
 {
