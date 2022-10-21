@@ -3,7 +3,7 @@
   "tasks": [
     {
       //这个大括号里是‘构建（build）’任务
-      "label": "build", //任务名称，可以更改，不过不建议改
+      "label": "CppBuild", //任务名称，可以更改，不过不建议改
       "type": "shell", //任务类型，process是vsc把预定义变量和转义解析后直接全部传给command；shell相当于先打开shell再输入命令，所以args还会经过shell再解析一遍
       "command": "g++", //编译命令，这里是gcc，编译c++的话换成g++
       "args": [
@@ -33,9 +33,9 @@
     },
     {
       //这个大括号里是‘运行(run)’任务，一些设置与上面的构建任务性质相同
-      "label": "run",
+      "label": "CppRun",
       "type": "shell",
-      "dependsOn": "build", //任务依赖，因为要运行必须先构建，所以执行这个任务前必须先执行build任务，
+      "dependsOn": "CppBuild", //任务依赖，因为要运行必须先构建，所以执行这个任务前必须先执行build任务，
       "command": "D:\\Zhou\\CppCode\\bin\\${fileBasenameNoExtension}.exe", //执行exe文件，只需要指定这个exe文件在哪里就好
       "group": {
         "kind": "test", //这一组是‘测试’组，将run任务放在test组里方便我们用快捷键执行

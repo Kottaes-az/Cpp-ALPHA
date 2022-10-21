@@ -15,8 +15,7 @@ const string SYS_LANG = "zh_CN";
     "fi_FI", "da_DK", "he_IL", "ko_KR", "it_IT", "no_NO", "hu_HU", "tr_TR",
     "cs_CZ", "sl_SL", "pl_PL", "sv_SE", "UNKNOWN_LANGUAGE"}; */
 
-int fibonacci(int n)
-{
+int fibonacci(int n) {
     /**
      * 求斐波那契数列的第n个数。
      * 参数1：正整数，所求数的在数列项数。
@@ -28,22 +27,17 @@ int fibonacci(int n)
                 fibonacci(n - 2)); //第n(n>2)个数位前两个数之和
     return -1;                     //异常值处理
 }
-void iArr(int *a, int n)
-{
+void arrIn(int *a, int n) {
     //输入一个一维数组。首先确定数组元素个数n，然后输入n个整数。
     for (int i = 0; i < n; i++) scanf("%d", a + i);
 }
-
-void oArr(int *a, int n)
-{
+void arrOut(int *a, int n) {
     //输出一个一维数组。首先确定需要输出的数组的元素个数n，然后输出n个整数。
     for (int i = 0; i < n; i++) printf("%d ", a[i]);
 }
-class SortSolution
-{
+class SortSolution {
   private:
-    void maxHeapify(int *a, int start, int end)
-    {
+    void maxHeapify(int *a, int start, int end) {
         // 建立父节点指标和子节点指标
         int dad = start;
         int son = dad * 2 + 1;
@@ -63,9 +57,7 @@ class SortSolution
     }
 
   public:
-    void bubbleSort(int *a, int n, bool fac1 = true, bool fac2 = true)
-    {
-
+    void bubbleSort(int *a, int n, bool fac1 = true, bool fac2 = true) {
         /**
          * 冒泡排序算法，包含两种可选择的子算法。
          * 平均(最坏、好)时间复杂度:O(n^2)
@@ -77,27 +69,23 @@ class SortSolution
          *          后n项算法:改造的冒泡排序，即在第n轮排序中，通过冒泡将后n项中的最大值放置到数组第n个。
          * **/
         int i, j;
-        if (fac1) //前n项算法
+        if (fac1) { //前n项算法
             for (j = 0; j < n - 1; j++)
-                for (i = 0; i < n - 1 - j; i++) {
+                for (i = 0; i < n - 1 - j; i++)
                     if ((fac2) && (a[i] > a[i + 1]))
                         swap(a[i], a[i + 1]); //非降序排列
-                    if ((!fac2) && (a[i] < a[i + 1]))
+                    else if ((!fac2) && (a[i] < a[i + 1]))
                         swap(a[i], a[i + 1]); //非升序排列
-                }
+        }
         if (!fac1) //后n项算法
             for (j = 0; j < n; j++)
-                for (i = n - j - 1; i < n; i++) {
+                for (i = n - j - 1; i < n; i++)
                     if ((fac2) && (a[i - 1] > a[i]))
                         swap(a[i], a[i - 1]); //非降序排列
-                    if ((!fac2) && (a[i] < a[i + 1]))
+                    else if ((!fac2) && (a[i] < a[i + 1]))
                         swap(a[i], a[i + 1]); //非升序排列
-                }
-        else
-            printf("%d", 0);
     }
-    void cppSort(int *a, int n, bool fac = true)
-    {
+    void cppSort(int *a, int n, bool fac = true) {
         /**
          * algorithm库sort排序算法。
          * 平均(最好)时间复杂度:O(n log n) 最坏时间复杂度:O(n^2)
@@ -108,8 +96,7 @@ class SortSolution
         if (fac) sort(a, a + n, less<int>());     // 非降序排列
         if (!fac) sort(a, a + n, greater<int>()); // 非升序排列
     }
-    void quickSort(int *a, int n, int l = 0, int r = 0)
-    {
+    void quickSort(int *a, int n, int l = 0, int r = 0) {
         /**
          * 标准快速排序算法，排序结果为非降序数组。
          * 平均(最好)时间复杂度:O(n log n) 最坏时间复杂度:O(n^2)
@@ -134,8 +121,7 @@ class SortSolution
         quickSort(a, l, i - 1); // i左边的序列继续递归调用快排
         quickSort(a, i + 1, r); // i右边的序列继续递归调用快排
     }
-    void selectionSort(int *a, int n, int fac = true)
-    {
+    void selectionSort(int *a, int n, int fac = true) {
         /**
          * 选择排序算法。可选结果为非升/降序数组。
          * 平均时间复杂度:O(n^2)
@@ -158,8 +144,7 @@ class SortSolution
                 swap(a[i], a[max]);
             }
     }
-    void insertionSort(int *a, int n)
-    {
+    void insertionSort(int *a, int n) {
         /**
          * 插入排序算法。结果为非降序数组。
          * 平均时间复杂度:O(n^(1-2))
@@ -169,15 +154,11 @@ class SortSolution
         for (int i = 1; i < n; i++) {
             int key = a[i];
             int j = i - 1;
-            while ((j >= 0) && (key < a[j])) {
-                a[j + 1] = a[j];
-                j--;
-            }
+            while ((j >= 0) && (key < a[j])) a[j + 1] = a[j--];
             a[j + 1] = key;
         }
     }
-    void shellSort(int *a, int n)
-    {
+    void shellSort(int *a, int n) {
         /**
          * 希尔排序算法。结果为非降序数组。
          * 平均时间复杂度:O(n^(1.3-2))
@@ -199,8 +180,7 @@ class SortSolution
             h /= 3;
         }
     }
-    void heapSort(int *a, int n)
-    {
+    void heapSort(int *a, int n) {
         /**
          * 堆排序算法。结果为非降序数组。
          * 平均时间复杂度:O(n)
@@ -216,12 +196,11 @@ class SortSolution
         }
     }
 } sortModule;
-int main()
-{
+int main() {
     int n;
     cin >> n;
     int a[n];
     for (int i = 0; i < n; i++) a[i] = fibonacci(i);
-    oArr(a, n);
+    arrOut(a, n);
     return 0;
 }

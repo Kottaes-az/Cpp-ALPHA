@@ -7,8 +7,8 @@ static const int BLOCK_SIZE = 1 << 4;
 static const string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                    "abcdefghijklmnopqrstuvwxyz"
                                    "0123456789+/";
-string EncryptionBase64(char const *bytes_to_encode, unsigned int in_len);
-string DecryptionBase64(const string &encoded_string);
+string encryptionBase64(char const *bytes_to_encode, unsigned int in_len);
+string decryptionBase64(const string &encoded_string);
 const int sm_alog[256] = {
     1,   3,   5,   15,  17,  51,  85,  255, 26,  46,  114, 150, 161, 248, 19,
     53,  95,  225, 56,  72,  216, 115, 149, 164, 247, 2,   6,   10,  30,  34,
@@ -736,8 +736,7 @@ const int sm_shifts[3][4][2] = {{{0, 0}, {1, 3}, {2, 2}, {3, 1}},
                                 {{0, 0}, {1, 7}, {3, 5}, {4, 4}}};
 /********************AES编解码********************/
 // AES加密方式：CBC，16位密钥，填充方式PKCS7Padding，base64输出。
-class AES
-{
+class AES {
   public:
     enum { ECB = 0, CBC = 1, CFB = 2 };
 
@@ -808,13 +807,11 @@ static int Mul4(int a, char b[])
 AES::AES() : m_bKeyInit(false), m_keylength(0), m_blockSize(0), m_iROUNDS(0) {}
 // DESTRUCTOR
 AES::~AES() {}
-void AES::Xor(char *buff, char const *chain)
-{
+void AES::Xor(char *buff, char const *chain) {
     if (false == m_bKeyInit) return;
     for (int i = 0; i < m_blockSize; i++) *(buff++) ^= *(chain++);
 }
-void AES::DefEncryptBlock(char const *in, char *result)
-{
+void AES::DefEncryptBlock(char const *in, char *result) {
     if (false == m_bKeyInit) return;
     int *Ker = m_Ke[0];
     int t0 = ((unsigned char)*(in++) << 24);
@@ -882,8 +879,7 @@ void AES::DefEncryptBlock(char const *in, char *result)
 //  in         - The ciphertext.
 //  result     - The plaintext generated from a ciphertext using the session
 //  key.
-void AES::DefDecryptBlock(char const *in, char *result)
-{
+void AES::DefDecryptBlock(char const *in, char *result) {
     if (false == m_bKeyInit) return;
     int *Kdr = m_Kd[0];
     int t0 = ((unsigned char)*(in++) << 24);
@@ -949,8 +945,7 @@ void AES::DefDecryptBlock(char const *in, char *result)
 // Encrypt exactly one block of plaintext.
 //  in           - The plaintext.
 //  result       - The ciphertext generated from a plaintext using the key.
-void AES::EncryptBlock(char const *in, char *result)
-{
+void AES::EncryptBlock(char const *in, char *result) {
     if (false == m_bKeyInit) return;
     if (DEFAULT_BLOCK_SIZE == m_blockSize) {
         DefEncryptBlock(in, result);
@@ -991,8 +986,7 @@ void AES::EncryptBlock(char const *in, char *result)
 //  in         - The ciphertext.
 //  result     - The plaintext generated from a ciphertext using the session
 //  key.
-void AES::DecryptBlock(char const *in, char *result)
-{
+void AES::DecryptBlock(char const *in, char *result) {
     if (!m_bKeyInit) return;
     if (DEFAULT_BLOCK_SIZE == m_blockSize) {
         DefDecryptBlock(in, result);
@@ -1037,8 +1031,7 @@ void AES::DecryptBlock(char const *in, char *result)
 //  keylength  - 16, 24 or 32 bytes
 //  blockSize  - The block size in bytes of this Rijndael (16, 24 or 32 bytes).
 void AES::MakeKey(char const *key, char const *chain, int keylength,
-                  int blockSize)
-{
+                  int blockSize) {
     if (NULL == key) return;
     if (!(16 == keylength || 24 == keylength || 32 == keylength)) return;
     if (!(16 == blockSize || 24 == blockSize || 32 == blockSize)) return;
@@ -1049,12 +1042,13 @@ void AES::MakeKey(char const *key, char const *chain, int keylength,
     memcpy(m_chain, chain, m_blockSize);
     // Calculate Number of Rounds
     switch (m_keylength) {
-    case 16:
-        m_iROUNDS = (m_blockSize == 16) ? 10 : (m_blockSize == 24 ? 12 : 14);
-        break;
-    case 24: m_iROUNDS = (m_blockSize != 32) ? 12 : 14; break;
-    default: // 32 bytes = 256 bits
-        m_iROUNDS = 14;
+        case 16:
+            m_iROUNDS =
+                (m_blockSize == 16) ? 10 : (m_blockSize == 24 ? 12 : 14);
+            break;
+        case 24: m_iROUNDS = (m_blockSize != 32) ? 12 : 14; break;
+        default: // 32 bytes = 256 bits
+            m_iROUNDS = 14;
     }
     int BC = m_blockSize / 4, i, j;
     for (i = 0; i <= m_iROUNDS; i++)
@@ -1112,8 +1106,7 @@ void AES::MakeKey(char const *key, char const *chain, int keylength,
         }
     m_bKeyInit = true;
 }
-void AES::Encrypt(char const *in, char *result, size_t n, int iMode)
-{
+void AES::Encrypt(char const *in, char *result, size_t n, int iMode) {
     if (!m_bKeyInit) return;
     // n should be > 0 and multiple of m_blockSize
     if ((!n) || (n % m_blockSize)) return;
@@ -1146,8 +1139,7 @@ void AES::Encrypt(char const *in, char *result, size_t n, int iMode)
             presult += m_blockSize;
         }
 }
-void AES::Decrypt(char const *in, char *result, size_t n, int iMode)
-{
+void AES::Decrypt(char const *in, char *result, size_t n, int iMode) {
     if (!m_bKeyInit) return;
     // n should be > 0 and multiple of m_blockSize
     if ((!n) || n % m_blockSize) return;
@@ -1183,7 +1175,7 @@ void AES::Decrypt(char const *in, char *result, size_t n, int iMode)
 }
 const char g_key[17] = "asdfwetyhjuytrfd";
 const char g_iv[17] = "gfdertfghjkuyrtg"; // ECB MODE不需要关心chain，可以填空
-string EncryptionAES(const string &strSrc) // AES加密
+string encryptionAES(const string &strSrc) // AES加密
 {
     size_t length = strSrc.length();
     int block_num = length / BLOCK_SIZE + 1;
@@ -1205,14 +1197,14 @@ string EncryptionAES(const string &strSrc) // AES加密
     aes.MakeKey(g_key, g_iv, 16, 16);
     aes.Encrypt(szDataIn, szDataOut, block_num * BLOCK_SIZE, AES::CBC);
     string str =
-        EncryptionBase64((const char *)szDataOut, block_num * BLOCK_SIZE);
+        encryptionBase64((const char *)szDataOut, block_num * BLOCK_SIZE);
     delete[] szDataIn;
     delete[] szDataOut;
     return str;
 }
-string DecryptionAES(const string &strSrc) // AES解密
+string decryptionAES(const string &strSrc) // AES解密
 {
-    string strData = DecryptionBase64(strSrc);
+    string strData = decryptionBase64(strSrc);
     size_t length = strData.length();
     //密文
     char *szDataIn = new char[length + 1];
@@ -1241,13 +1233,11 @@ string DecryptionAES(const string &strSrc) // AES解密
     return strDest;
 }
 /********************AES编解码********************/
-static inline bool is_base64(unsigned char c)
-{
+static inline bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
 }
 /********************BASE64编解码********************/
-string EncryptionBase64(char const *bytes_to_encode, unsigned int in_len)
-{
+string encryptionBase64(char const *bytes_to_encode, unsigned int in_len) {
     string ret;
     int i = 0, j = 0;
     unsigned char char_array_3[3], char_array_4[4];
@@ -1277,8 +1267,7 @@ string EncryptionBase64(char const *bytes_to_encode, unsigned int in_len)
     }
     return ret;
 }
-string DecryptionBase64(string const &encoded_string)
-{
+string decryptionBase64(string const &encoded_string) {
     string ret;
     int in_len = encoded_string.size(), i = 0, j = 0, in_ = 0;
     unsigned char char_array_4[4], char_array_3[3];

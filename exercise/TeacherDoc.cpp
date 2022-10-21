@@ -1,8 +1,7 @@
 #include <iostream>
 using namespace std;
 int len = 5;
-struct teacher
-{
+struct teacher {
     string id, name, sex, depart, job;
     int salary;
 } t[1001] = {{"201901", "刘明", "男", "化工学院", "副教授", 12000},
@@ -10,17 +9,14 @@ struct teacher
              {"201503", "蔡琳", "女", "化工学院", "讲师", 6900},
              {"201805", "李晓红", "女", "化工学院", "助教", 7200},
              {"201902", "王爱华", "男", "环保学院", "讲师", 7900}};
-void infOut(teacher a)
-{
+void infOut(teacher a) {
     cout << a.id << ' ' << a.name << ' ' << a.sex << ' ' << a.depart << ' '
          << a.job << ' ' << a.salary << endl;
 }
-void infIn(teacher a)
-{
+void infIn(teacher a) {
     cin >> a.id >> a.name >> a.sex >> a.depart >> a.job >> a.salary;
 }
-void inq(char type)
-{
+void inq(char type) {
     string tmp, tmp1, tmp2, dep;
     int maxn = 0, minn = len - 1;
     switch (type) {
@@ -59,10 +55,9 @@ void inq(char type)
         break;
     }
 }
-int main()
-{
-    char choice;
-    while (cin >> choice) switch (choice) {
+int main() {
+    char choice = 'K';
+    while (cin >> choice && isalpha(choice)) switch (choice) {
         case 'A': inq('A'); break;
         case 'B': inq('B'); break;
         case 'C': inq('C'); break;
@@ -70,6 +65,5 @@ int main()
         case 'E': inq('E'); break;
         case 'Q': return 0; break;
         }
-
     return 0;
 }
