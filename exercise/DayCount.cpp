@@ -36,35 +36,3 @@ int main() {
     cout << getDateCount(inDate);
     return 0;
 }
-/* 法二：*/
-/*
-int MonthMark[13] = {0,   31,  59,  90,  120, 151, 181,
-                     212, 243, 273, 304, 334, 365};
-int MonthDay(int year, int month, int day)
-{
-    if (LeapYear(year))
-        if (month > 2)
-            return MonthMark[month - 1] + 1 + day;
-        else
-            return MonthMark[month - 1] + day;
-    else
-        return MonthMark[month - 1] + day;
-}
-int main()
-{
-    int y, m, d;
-    string info;
-    char *token;
-    cin >> info;
-    token = strtok((char *)info.c_str(), ",");
-    while (token != NULL) {
-        if (!j) y = atoi(token);
-        if (j == 1) m = atoi(token);
-        if (j == 2) d = atoi(token);
-        token = strtok(NULL, ",");
-        j++;
-    } //拆分年月日为单独数据
-    cout << MonthDay(y, m, d) << endl;
-    return 0;
-}
- */
